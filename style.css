@@ -30,6 +30,11 @@ section[data-testid='stSidebar'] {
         min-width: 330px !important;
         }
 
+    section[data-testid='stIFrame'] {
+      width: 100% !important;
+      }
+
+
     button[kind="header"] {
         display: none;
     }
@@ -65,6 +70,9 @@ section[data-testid='stSidebar'] {
     section[data-testid='stSidebar']:hover{
         min-width: 330px !important;
         }
+    section[data-testid='stIFrame'] {
+      width: 100% !important;
+      }
 
     button[kind="header"] {
         display: none;

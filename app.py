@@ -24,6 +24,7 @@ def add_bg_from_local(image_path):
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+            color : white;
         }}
         </style>
         """,
@@ -106,6 +107,15 @@ def resize_image(image):
 
     return resized_image
 
+
+def resize_to_max_width(image, max_width):
+    """Redimensionne une image pour que sa largeur ne dépasse pas max_width, tout en conservant le ratio."""
+    width, height = image.size
+    if width > max_width:
+        aspect_ratio = max_width / width
+        new_height = int(height * aspect_ratio)
+        image = image.resize((max_width, new_height), Image.LANCZOS)
+    return image
 # Contenus des sections
 if selected2 == "Home":
     # Titre principal
@@ -197,12 +207,28 @@ elif selected2 == "Prediction":
                     if image_array:
                         image = array_to_image(image_array)
                         uploaded_image = Image.open(uploaded_file)
-                        image_comparison(
-                            img1=uploaded_image,
-                            img2=image,
-                            label1="Originale",
-                            label2="Avec Segmentation"
-                        )
+
+                        # Afficher la comparaison d'images
+                        with st.container():
+                            st.markdown(
+                                """
+                                <style>
+                                .stImageComparison {
+                                    width: 100% !important; /* S'assurer que l'image prend 100% de la largeur du conteneur */
+                                }
+                                </style>
+                                """,
+                                unsafe_allow_html=True,
+                            )
+
+                            # Afficher la comparaison d'images dans le conteneur
+                            image_comparison(
+                                img1=uploaded_image,
+                                img2=image,
+                                label1="Originale",
+                                label2="Avec Segmentation",
+                                make_responsive=True,
+                            )
                     else:
                         st.error("Erreur : L'API segmentation n'a pas retourné d'image.")
                 else:
