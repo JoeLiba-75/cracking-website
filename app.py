@@ -32,7 +32,7 @@ def add_bg_from_local(image_path):
 
 # Ajout de l'image de fond
 
-add_bg_from_local("DALL·E 2024-12-03 11.34.31 - A dark and subtle abstract background suitable for a website offering AI solutions for crack detection in concrete. The design features a minimalist s.webp")
+add_bg_from_local("DALL·E 2024-12-03 11.43.31 - A dark and subtle abstract background suitable for a website offering AI solutions for crack detection in concrete. The design features a minimalist s.webp")
 
 
 
@@ -124,6 +124,8 @@ elif selected2 == "Prediction":
     st.title("Prediction des fissures à partir d'une photo")
 
     # Charger un fichier
+# Charger un fichier
+# Charger un fichier
     uploaded_file = st.file_uploader(
         "Choisissez un fichier",
         accept_multiple_files=False,
@@ -135,26 +137,18 @@ elif selected2 == "Prediction":
 
         # Bouton pour effectuer la prédiction
         if st.button("Faire la prédiction"):
-            # URL de l'API classification
-            classification_url = "http://127.0.0.1:8000/classification/"
-
-            # Préparer le fichier pour la requête POST
+            classification_url = "https://crackapi-798025987909.europe-west1.run.app/classification/"
             files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
 
             try:
-                # Effectuer la requête POST
                 response = requests.post(classification_url, files=files)
-
-                # Vérifier si la requête a réussi
                 if response.status_code == 200:
-                    # Afficher la réponse de l'API
                     prediction = response.json()
                     fissure_class = prediction.get("Classe de la fissure", "")
 
-                    if fissure_class == "Aucune fissure detectée":
-                        st.success("✅ Aucune fissure détectée.")
-                    else:
-                        st.warning(f"⚠️ Fissure détectée : {fissure_class}.")
+                    # Stocker la classe de fissure dans st.session_state
+                    st.session_state["fissure_class"] = fissure_class
+
 
                 else:
                     st.error(f"Erreur API classification : {response.status_code} - {response.text}")
@@ -162,37 +156,48 @@ elif selected2 == "Prediction":
             except Exception as e:
                 st.error(f"Une erreur s'est produite : {e}")
 
+        # Afficher le message de fissure_class (s'il existe) après l'action
+        if "fissure_class" in st.session_state:
+            fissure_class = st.session_state["fissure_class"]
+            if fissure_class == "Aucune fissure detectée":
+                st.success("✅ Aucune fissure détectée.")
+            else:
+                st.warning(f"⚠️ Fissure détectée : {fissure_class}.")
+
+        # Bouton pour vérifier avec la segmentation
         if st.button("Vérifier avec la segmentation"):
-                        # URL de l'API segmentation
-                        segmentation_url = "http://127.0.0.1:8000/segmentation/"
-                        files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
-                        # Envoyer la requête à l'API segmentation
-                        response_seg = requests.post(segmentation_url, files=files)
+            segmentation_url = "https://crackapi-798025987909.europe-west1.run.app/segmentation"
+            files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
 
-                        # Vérifier si la requête a réussi
-                        if response_seg.status_code == 200:
-                            seg_data = response_seg.json()
-                            image_array = seg_data.get("image", [])
+            try:
+                response_seg = requests.post(segmentation_url, files=files)
+                if response_seg.status_code == 200:
+                    seg_data = response_seg.json()
+                    image_array = seg_data.get("image", [])
+                    if image_array:
+                        image = array_to_image(image_array)
+                        uploaded_image = Image.open(uploaded_file)
+                        image_comparison(
+                            img1=uploaded_image,
+                            img2=image,
+                            label1="Originale",
+                            label2="Avec Segmentation"
+                        )
+                    else:
+                        st.error("Erreur : L'API segmentation n'a pas retourné d'image.")
+                else:
+                    st.error(f"Erreur API segmentation : {response_seg.status_code} - {response_seg.text}")
 
-                            # Convertir le tableau retourné en image
-                            if image_array:
-                                image = array_to_image(image_array)
-                                st.image(image, caption="Résultat de la segmentation.")
-                            else:
-                                st.error("Erreur : L'API segmentation n'a pas retourné d'image.")
-                        else:
-                            st.error(f"Erreur API segmentation : {response_seg.status_code} - {response_seg.text}")
+            except Exception as e:
+                st.error(f"Une erreur s'est produite : {e}")
 
-
-
-#     if uploaded_file:
-#         st.success(f"Le fichier '{uploaded_file.name}' a été prédit avec succès !")
-#         # set page config
-
-#         image_comparison(
-#             img1="05538.jpg",
-#             img2="05538pred.jpg",
-# )
+    # if uploaded_file:
+    #     st.success(f"Le fichier '{uploaded_file.name}' a été prédit avec succès !")
+    #     # set page config
+    #     image_comparison(
+    #         img1="05538.jpg",
+    #         img2="05538pred.jpg",
+    #     )
 
 
 elif selected2 == "Resultats":
