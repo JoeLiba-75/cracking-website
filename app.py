@@ -93,6 +93,27 @@ def array_to_image(array):
     """Convertir une liste 2D en une image PIL."""
     return Image.fromarray(np.array(array, dtype=np.uint8))
 
+def resize_image(image):
+    target_side = 227
+    if image.size == (target_side,target_side):
+        return image
+    elif image.size[0] == image.size[1]:
+        shape = 'square'
+    else:
+        shape = 'rectangle'
+
+    if shape == 'square':
+        resized_image = image.resize((target_side,target_side),Image.LANCZOS)
+
+    if shape == 'rectangle':
+
+        side = np.min(image.size)
+        image_squared = np.array(image)[0:side,0:side]
+        PIL_image_squared = Image.fromarray(np.uint8(image_squared)).convert('RGB')
+        resized_image = PIL_image_squared.resize((target_side,target_side),Image.LANCZOS)
+
+    return resized_image
+
 # Contenus des sections
 if selected2 == "Home":
     # Titre principal
@@ -132,13 +153,15 @@ elif selected2 == "Prediction":
         type=["PNG", "JPG"]
     )
 
+
     if uploaded_file is not None:
+        image_up = resize_image(Image.open(uploaded_file))
         st.image(uploaded_file, caption="Image chargée.", use_container_width=True)
 
         # Bouton pour effectuer la prédiction
         if st.button("Faire la prédiction"):
             classification_url = "https://crackapi-798025987909.europe-west1.run.app/classification/"
-            files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
+            files = {"file": (uploaded_file.name, image_up , uploaded_file.type)}
 
             try:
                 response = requests.post(classification_url, files=files)
