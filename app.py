@@ -94,23 +94,15 @@ def array_to_image(array):
     return Image.fromarray(np.array(array, dtype=np.uint8))
 
 def resize_image(image):
-    target_side = 227
-    if image.size == (target_side,target_side):
-        return image
-    elif image.size[0] == image.size[1]:
-        shape = 'square'
-    else:
-        shape = 'rectangle'
+    target_height = 227
+    width, height = image.size
 
-    if shape == 'square':
-        resized_image = image.resize((target_side,target_side),Image.LANCZOS)
+    # Calcul du nouveau ratio en fonction de la hauteur
+    aspect_ratio = target_height / height
+    new_width = int(width * aspect_ratio)
 
-    if shape == 'rectangle':
-
-        side = np.min(image.size)
-        image_squared = np.array(image)[0:side,0:side]
-        PIL_image_squared = Image.fromarray(np.uint8(image_squared)).convert('RGB')
-        resized_image = PIL_image_squared.resize((target_side,target_side),Image.LANCZOS)
+    # Redimensionner l'image avec une hauteur fixée à 227
+    resized_image = image.resize((new_width, target_height), Image.LANCZOS)
 
     return resized_image
 
@@ -156,12 +148,17 @@ elif selected2 == "Prediction":
 
     if uploaded_file is not None:
         image_up = resize_image(Image.open(uploaded_file))
+        buffer = io.BytesIO()
+        image_format = "JPEG" if uploaded_file.type == "image/jpeg" else "PNG"
+        image_up.save(buffer, format=image_format)
+        buffer.seek(0)
+
         st.image(uploaded_file, caption="Image chargée.", use_container_width=True)
 
         # Bouton pour effectuer la prédiction
         if st.button("Faire la prédiction"):
             classification_url = "https://crackapi-798025987909.europe-west1.run.app/classification/"
-            files = {"file": (uploaded_file.name, image_up , uploaded_file.type)}
+            files = {"file": (uploaded_file.name, buffer , uploaded_file.type)}
 
             try:
                 response = requests.post(classification_url, files=files)
@@ -190,7 +187,7 @@ elif selected2 == "Prediction":
         # Bouton pour vérifier avec la segmentation
         if st.button("Vérifier avec la segmentation"):
             segmentation_url = "https://crackapi-798025987909.europe-west1.run.app/segmentation"
-            files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
+            files = {"file": (uploaded_file.name, buffer, uploaded_file.type)}
 
             try:
                 response_seg = requests.post(segmentation_url, files=files)
