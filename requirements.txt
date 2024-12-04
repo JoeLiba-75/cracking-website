@@ -1,0 +1,5 @@
+streamlit
+streamlit-image-comparison==0.0.4
+streamlit-on-Hover-tabs==1.0.1
+streamlit-option-menu==0.4.0
+requests==2.32.3
