@@ -27,8 +27,11 @@ def add_bg_from_local(image_path):
             background-attachment: fixed;
             color : black;
         }}
-        .stButton {{
+        .stBaseButton-segondary {{
             background-color:black;
+            color : white !important;
+        }}
+        .stButton {{
             color : white !important;
         }}
         .st-b4 {{
