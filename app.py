@@ -85,8 +85,8 @@ def set_global_backdrop(image_url):
 
 
 with st.sidebar:
-    selected2 = on_hover_tabs(tabName=["Home", "Prediction", "Resultats",],
-                         iconName=['dashboard', 'search', 'check'], default_choice=0,
+    selected2 = on_hover_tabs(tabName=["Home", "Prediction", "Resultats","QRcode","Presentation"],
+                         iconName=['dashboard', 'search', 'check', "",""], default_choice=0,
                          styles = {'navtab': {'background-color':'#111',
                                                   'color': '#818181',
                                                   'font-size': '18px',
@@ -290,3 +290,12 @@ elif selected2 == "Resultats":
     ''')
     # Ajout d'une image ou logo (facultatif)
     st.image("maxresdefault.jpg", caption="Inspection des fissures dans le béton", use_container_width=True)
+
+
+elif selected2 == "Presentation":
+    add_bg_from_local("Capture d’écran 2024-12-05 143636.png")
+
+
+elif selected2 == "QRcode":
+    add_bg_from_local("DALL·E 2024-12-04 16.25.32 - A light pastel-colored wall, either pale green or pale blue, with subtle cracks running through its surface. The cracks are natural and irregular, ble.webp")
+    st.image("qr-code (3).png", caption="QR Code du streamlit", use_container_width=True)
