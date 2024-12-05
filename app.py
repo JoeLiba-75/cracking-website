@@ -33,6 +33,10 @@ def add_bg_from_local(image_path):
         .st-b4 {{
             color: black;
         }}
+
+        .stIFrame {{
+            width:100%;
+        }}
         </style>
         """,
         unsafe_allow_html=True
