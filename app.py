@@ -182,7 +182,7 @@ elif selected2 == "Prediction":
 
         # Bouton pour effectuer la prédiction
         if st.button("Tester la présence de fissure"):
-            classification_url = "https://crackapiv3-798025987909.europe-west1.run.app/classification/"
+            classification_url = "https://crackapi-798025987909.europe-west1.run.app/classification/"
             files = {"file": (uploaded_file.name, buffer , uploaded_file.type)}
 
             try:
@@ -211,7 +211,7 @@ elif selected2 == "Prediction":
 
         # Bouton pour vérifier avec la segmentation
         if st.button("Segmentation"):
-            segmentation_url = "https://crackapiv3-798025987909.europe-west1.run.app/segmentation"
+            segmentation_url = "https://crackapi-798025987909.europe-west1.run.app/segmentation"
             files = {"file": (uploaded_file.name, buffer, uploaded_file.type)}
 
             try:
