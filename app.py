@@ -28,6 +28,7 @@ def add_bg_from_local(image_path):
             color : black;
         }}
         .stButton {{
+            background-color:black;
             color : white !important;
         }}
         .st-b4 {{
