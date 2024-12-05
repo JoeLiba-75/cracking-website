@@ -24,7 +24,7 @@ def add_bg_from_local(image_path):
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            color : white;
+            color : black;
         }}
         </style>
         """,
@@ -33,7 +33,7 @@ def add_bg_from_local(image_path):
 
 # Ajout de l'image de fond
 
-add_bg_from_local("DALL·E 2024-12-03 11.43.31 - A dark and subtle abstract background suitable for a website offering AI solutions for crack detection in concrete. The design features a minimalist s.webp")
+add_bg_from_local("DALL·E 2024-12-04 16.25.32 - A light pastel-colored wall, either pale green or pale blue, with subtle cracks running through its surface. The cracks are natural and irregular, ble.webp")
 
 
 
