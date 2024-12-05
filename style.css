@@ -4,6 +4,15 @@ section[data-testid='stSidebar'] {
 
 }
 
+section[data-testid='stButton'] {
+  background-color: #0066cc;
+  border-color: #ffffff;
+  box-shadow: none;
+  color: #ffffff;
+  background-color: #0066cc;
+}
+
+
 @media(hover:hover) and (min-width: 600px) and (max-width: 769px){
 
     header[data-testid="stHeader"] {
@@ -26,6 +35,15 @@ section[data-testid='stSidebar'] {
         white-space: nowrap;
     }
 
+    section[data-testid='stButton'] {
+      background-color: #0066cc;
+      border-color: #ffffff;
+      box-shadow: none;
+      color: #ffffff;
+      background-color: #0066cc;
+    }
+
+
     section[data-testid='stSidebar']:hover{
         min-width: 330px !important;
         }
@@ -47,8 +65,18 @@ section[data-testid='stSidebar'] {
 
 @media(hover: hover) and (min-width: 769px){
 
+
+
     header[data-testid="stHeader"] {
         display:none;
+    }
+
+    section[data-testid='stButton'] {
+      background-color: #0066cc;
+      border-color: #ffffff;
+      box-shadow: none;
+      color: #ffffff;
+      background-color: #0066cc;
     }
 
     section[data-testid='stSidebar'] {
@@ -81,4 +109,6 @@ section[data-testid='stSidebar'] {
     div[data-testid="collapsedControl"]{
         display: none;
     }
+
+
 }

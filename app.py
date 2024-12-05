@@ -9,6 +9,7 @@ from PIL import Image
 import numpy as np
 import io
 
+
 st.markdown('<style>' + open('./style.css').read() + '</style>', unsafe_allow_html=True)
 
 # Ajout de styles CSS pour changer l'image de fond
@@ -25,6 +26,12 @@ def add_bg_from_local(image_path):
             background-repeat: no-repeat;
             background-attachment: fixed;
             color : black;
+        }}
+        .stButton {{
+            color : white !important;
+        }}
+        .st-b4 {{
+            color: black;
         }}
         </style>
         """,
@@ -166,7 +173,7 @@ elif selected2 == "Prediction":
         st.image(uploaded_file, caption="Image chargée.", use_container_width=True)
 
         # Bouton pour effectuer la prédiction
-        if st.button("Faire la prédiction"):
+        if st.button("Tester la présence de fissure"):
             classification_url = "https://crackapiv2-798025987909.europe-west1.run.app/classification/"
             files = {"file": (uploaded_file.name, buffer , uploaded_file.type)}
 
@@ -195,7 +202,7 @@ elif selected2 == "Prediction":
                 st.warning(f"⚠️ Fissure détectée : {fissure_class}.")
 
         # Bouton pour vérifier avec la segmentation
-        if st.button("Vérifier avec la segmentation"):
+        if st.button("Segmentation"):
             segmentation_url = "https://crackapiv2-798025987909.europe-west1.run.app/segmentation"
             files = {"file": (uploaded_file.name, buffer, uploaded_file.type)}
 
